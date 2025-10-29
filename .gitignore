@@ -3,6 +3,9 @@
 /.pnp
 .pnp.js
 
+#
+/public/*.json
+
 # testing
 /coverage
 
