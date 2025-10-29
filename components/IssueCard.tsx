@@ -43,7 +43,7 @@ export default function IssueCard({ issue, onClick, isSelected, isDraggable = tr
         isSelected ? 'ring-2' : ''
       }`}
       style={{
-        backgroundColor: isDragging ? 'var(--color-border)' : 'white',
+        backgroundColor: isDragging ? 'var(--color-border)' : 'var(--color-primary-light)',
         borderColor: isSelected ? 'var(--color-primary)' : 'var(--color-border)',
         opacity: isDragging ? 0.5 : 1,
         border: isSelected ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
