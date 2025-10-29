@@ -221,7 +221,7 @@ export default function SprintsPage() {
         </div>
 
         {/* Sprint Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" style={{ height: 'calc(100vh - 300px)' }}>
+        <div className="grid grid-cols-3 gap-4" style={{ height: 'calc(100vh - 300px)' }}>
           {/* Backlog Column */}
           <SprintColumn
             sprintName={null}
