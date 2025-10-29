@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { DataStore } from '@/lib/dataStore';
 import { AppProject } from '@/lib/types';
 import BacklogTable from '@/components/BacklogTable';
+import { DataStore } from '@/lib/dataStore';
 
 export default function BacklogPage() {
   const [project] = useState<AppProject | null>(() => {
-    // Initialize state with the active project if available
     if (typeof window !== 'undefined') {
       return DataStore.getActiveProject();
     }
@@ -16,13 +15,13 @@ export default function BacklogPage() {
   });
   const router = useRouter();
 
-  useEffect(() => {
-    // Only redirect if there's no project
+  useEffect(() => {    
     if (!project) {
       router.push('/projects');
     }
   }, [project, router]);
 
+  // Show loading while project is loading
   if (!project) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">

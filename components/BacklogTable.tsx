@@ -1,13 +1,14 @@
 'use client';
 
 import { JiraIssue } from '@/lib/types';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, RefObject } from 'react';
 
 interface BacklogTableProps {
   issues: JiraIssue[];
+  searchInputRef?: RefObject<HTMLInputElement>;
 }
 
-export default function BacklogTable({ issues }: BacklogTableProps) {
+export default function BacklogTable({ issues, searchInputRef }: BacklogTableProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -101,6 +102,7 @@ export default function BacklogTable({ issues }: BacklogTableProps) {
       {/* Filters and Search */}
       <div className="mb-6 space-y-4">
         <input
+          ref={searchInputRef}
           type="text"
           placeholder="Search by key, summary, or description..."
           value={searchTerm}

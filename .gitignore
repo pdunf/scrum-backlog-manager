@@ -3,8 +3,9 @@
 /.pnp
 .pnp.js
 
-#
+# local data
 /public/*.json
+/util/out/
 
 # testing
 /coverage

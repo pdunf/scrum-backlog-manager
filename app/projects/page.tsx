@@ -5,11 +5,16 @@ import { useRouter } from 'next/navigation';
 import { DataStore } from '@/lib/dataStore';
 import { AppProject } from '@/lib/types';
 import ProjectCard from '@/components/ProjectCard';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<AppProject[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; project: AppProject | null }>({
+    isOpen: false,
+    project: null,
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -33,14 +38,11 @@ export default function ProjectsPage() {
       DataStore.setActiveProjectId(project.id);
       loadProjects();
       
-      // Show success message
-      alert(`Successfully imported project: ${project.name}`);
-      
       // Redirect to backlog
       router.push('/backlog');
     } catch (error) {
       console.error('Error importing file:', error);
-      alert('Error importing file. Please make sure it\'s a valid JSON file.');
+      alert('Error importing file. Please make sure it\'s a valid JSON file exported from Jira.');
     } finally {
       setIsUploading(false);
       // Reset file input
@@ -55,8 +57,15 @@ export default function ProjectsPage() {
   };
 
   const handleDeleteProject = (project: AppProject) => {
-    DataStore.deleteProject(project.id);
-    loadProjects();
+    setDeleteConfirm({ isOpen: true, project });
+  };
+
+  const confirmDelete = () => {
+    if (deleteConfirm.project) {
+      DataStore.deleteProject(deleteConfirm.project.id);
+      loadProjects();
+    }
+    setDeleteConfirm({ isOpen: false, project: null });
   };
 
   const handleExportProject = (project: AppProject) => {
@@ -116,6 +125,17 @@ export default function ProjectsPage() {
           ))}
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={deleteConfirm.isOpen}
+        title="Delete Project"
+        message={`Are you sure you want to delete "${deleteConfirm.project?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteConfirm({ isOpen: false, project: null })}
+      />
     </div>
   );
 }
