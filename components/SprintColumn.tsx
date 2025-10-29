@@ -41,7 +41,7 @@ export default function SprintColumn({
 
   return (
     <div
-      ref={drop}
+      ref={drop as any}
       className="flex flex-col h-full rounded-lg border-2 transition-colors"
       style={{
         backgroundColor: isOver ? 'var(--color-background)' : 'var(--color-surface)',

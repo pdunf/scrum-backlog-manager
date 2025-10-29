@@ -7,18 +7,15 @@ import { useMemo } from 'react';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const project = DataStore.getActiveProject();
 
   // Derive active project info without state
   const projectInfo = useMemo(() => {
-    if (typeof window === 'undefined') {
-      return { hasProject: false, name: '' };
-    }
-    const project = DataStore.getActiveProject();
     return {
       hasProject: !!project,
       name: project?.name || '',
     };
-  }, []); // Re-calculate on route change
+  }, [project]); // Re-calculate on route change
 
   const handleExport = () => {
     const project = DataStore.getActiveProject();
@@ -41,12 +38,9 @@ export default function Navigation() {
             <Link href="/" style={{ color: 'var(--color-primary)' }} className="text-xl font-bold">
               Scrum Manager
             </Link>
-            
-            {projectInfo.hasProject && projectInfo.name && (
-              <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                {projectInfo.name}
-              </span>
-            )}
+            <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+              {projectInfo?.name || 'No Active Project.'}
+            </span>
           </div>
           
           <div className="flex items-center space-x-4">
